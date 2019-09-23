@@ -1,0 +1,37 @@
+<ul class="rr-list">
+  {{#each model.songs as |song|}}
+    <li class="rr-list-item">
+      {{song.title}}
+      <StarRating class="fr" @rating={{song.rating}}
+      onclick={{action "updateRating" song}}/>
+    </li>
+  {{else}}
+    <li class="tc">
+      No {{model.name}} songs yet. Let's
+      <a href="#" onclick={{action "addSong"}}>
+        Create one
+      </a>
+    </li>
+
+
+
+  {{/each}}
+</ul>
+<div class="rr-new-label">
+  {{#if isAddingSong}}
+    <form onsubmit={{action "saveSong"}} class="rr-inline-form">
+      {{input type="text" class="rr-input" value=newSongTitle placeholder="Song title"}}
+
+      <div class="rr-inline-form-group ml-auto">
+        <button type="submit" class="rr-action-button" disabled={{isAddButtonDisabled}}>Add Song</button>
+        <button type="submit" class="rr-cancel-icon" onclick={{action "cancelAddSong"}}>Cancel</button>
+      </div>
+    </form>
+  {{else}}
+    <label onclick={{action "addSong"}}>
+      {{!-- {{fa-icon "plus"}} --}}
+      <span class="m1l">Add new song</span>
+    </label>
+
+  {{/if}}
+</div>
