@@ -1,6 +1,5 @@
 import Controller from "@ember/controller";
 import { empty } from "@ember/object/computed";
-import Song from "rawre/models/song";
 
 export default Controller.extend({
   isAddingSong: false,
@@ -15,10 +14,13 @@ export default Controller.extend({
     cancelAddSong() {
       this.set("isAddingSong", false);
     },
-    saveSong(evt) {
+    async saveSong(evt) {
       evt.preventDefault();
-      let newSong = Song.create({ title: this.newSongTitle });
-      this.model.songs.pushObject(newSong);
+      let newSong = this.store.createRecord("song", {
+        title: this.get("newSongTitle"),
+        band: this.model
+      });
+      await newSong.save();
       this.set("newSongTitle", "");
     },
     updateRating(song, rating) {
